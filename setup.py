@@ -11,7 +11,7 @@ version = '0.1dev'
 
 module1 = Extension("sampletau",
                              sources=["sampletau/sampletau.pyx", "sampletau/c_sample_tau.c"],
-                             extra_compile_args=['-O3', '-march=native'],
+                             extra_compile_args=['-O3', '-march=native', '-mno-avx'],
                              libraries =['gsl',  'gslcblas'],
                              include_dirs=[numpy.get_include(), '/opt/local/include/'])
 
