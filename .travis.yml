@@ -26,7 +26,7 @@ before_install:
    - curl -fsSL https://cloudstor.aarnet.edu.au/plus/index.php/s/7DH5qMuM5jMbcUc/download > testdata.tar
    - tar xf testdata.tar
 install:
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION cython numpy scipy biopython pandas pip scikit-learn docutils sphinx jinja2 seaborn nextflow bwa samtools
+  - conda install --yes python=$TRAVIS_PYTHON_VERSION cython numpy scipy biopython pandas pip scikit-learn docutils sphinx jinja2 seaborn nextflow bwa samtools r r-ggplot2 r-reshape r-getopt
   - python setup.py install
 # command to run tests
 script: ./scripts/desmanflow.nf --speciescontigs=testdata/species_contigs.txt --assembly=testdata/testasm.fa --inputreads=testdata/fastq
