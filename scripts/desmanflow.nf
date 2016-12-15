@@ -31,15 +31,16 @@ Channel.fromFilePairs(params.inputreads+"/*"+params.r12extglob).ifEmpty('\n==\n=
 // this might be skipped in a future workflow since it will likely already be done to make the species bins
 process mapReads {
     input:
-    set x, file(x1), file(x2) from readfiles
+    set x, file(reads) from readfiles
     file 'assembly.fa' from assembly4map
 
     output:
     file '*.sort.bam' into bamfiles
 
     """
+    set -o pipefail
     bwa index assembly.fa
-    bwa mem assembly.fa x1 x2 | samtools view -q40 -S -b - | samtools sort -o - - > ${x}.sort.bam
+    bwa mem assembly.fa ${reads[0]} ${reads[1]} | samtools view -q40 -S -b - | samtools sort -o - - > ${x}.sort.bam
     """
 }
 
