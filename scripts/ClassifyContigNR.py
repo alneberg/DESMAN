@@ -21,10 +21,6 @@ MIN_IDENTITY = 0.40
 # No limit in nr of matches from file to be used
 MAX_MATCHES = 1e100
 
-# Fraction of weights needed to assign at a specific level,
-# a measure of concensus at that level.
-MIN_FRACTION = 0.9
-
 def read_blast_input(blastinputfile,lengths, accession_mode=False):
     #k191_83_2       gi|973180054|gb|KUL19018.1|     71.2    73      21      0       9       81      337     409     6.6e-24 118.2
     
@@ -159,6 +155,8 @@ def main(argv):
 
     parser.add_argument('-l','--lineage_file', help="text taxaid to lineage mapping")
 
+    parser.add_argument('-f','--min_fraction', default=0.5, type=float, help="Minimum fraction of weights needed to assign to a particular level, default 0.5. 0.9 would be more strict.")
+
     parser.add_argument('-o','--output_dir', type=str, default="output",
         help=("string specifying output directory and file stubs"))
 
@@ -235,7 +233,7 @@ def main(argv):
                 if dWeight > 0.0:
                     dP = float(sortCollate[0][1])/dWeight
                     
-                    if dP > MIN_FRACTION:
+                    if dP > args.min_fraction:
                         geneAssign[gene][depth] = (sortCollate[0][0],dP)
                         assignBack = mapBack[depth][sortCollate[0][0]]
                         depth2 = depth -1
@@ -291,7 +289,7 @@ def main(argv):
                 dP = 0.0
                 if dWeight > 0.0:
                     dP = float(sortCollate[0][1])/dWeight
-                    if dP > MIN_FRACTION:
+                    if dP > args.min_fraction:
                         contigAssign[contig][depth] = (sortCollate[0][0],dP,sortCollate[0][1])
                     else:
                         contigAssign[contig][depth] = ('No hits',0.,0.)
